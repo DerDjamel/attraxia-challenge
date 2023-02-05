@@ -12,7 +12,14 @@ import {
   CircularProgress
 } from '@mui/material';
 import NoTicketsFound from '../tables/ticketsTable/NoTicketsFound';
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import SearchInput from '../inputs/SearchInput';
@@ -169,14 +176,14 @@ const TicketsSection = () => {
   const tableData = useMemo(() => {
     return (
       keySelected === 'all'
-        ? rows
+        ? rows.filter((row) => {
+            if (row.title.includes(search)) return row;
+          })
         : rows.filter((row) => {
-            if (row.status === keySelected) return row;
+            if (row.status === keySelected && row.title.includes(search))
+              return row;
           })
     )
-      .filter((row) => {
-        if (row.title.includes(search)) return row;
-      })
       .sort(sortComparator(sortedBy, sortDirection))
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   }, [
@@ -202,12 +209,15 @@ const TicketsSection = () => {
   /**
    * Helper function to sort the rows
    */
-  function sortTableByColumn(tableColumn: ColumnsOptions) {
+  const memosortTableByColumn = useCallback(function sortTableByColumn(
+    tableColumn: ColumnsOptions
+  ) {
     setSortDirection((sortDirection) =>
       sortDirection === 'asc' ? 'desc' : 'asc'
     );
     setSortedBy(tableColumn);
-  }
+  },
+  []);
 
   return (
     <>
@@ -326,7 +336,7 @@ const TicketsSection = () => {
                 data={tableData}
                 sortedBy={sortedBy}
                 sortDirection={sortDirection}
-                sortTableByColumn={sortTableByColumn}
+                sortTableByColumn={memosortTableByColumn}
                 searchLoading={searchLoading}
                 debouncedSearchValue={debouncedSearchValue}></TicketsTable>
             </Suspense>

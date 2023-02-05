@@ -8,7 +8,6 @@ import {
 import { memo } from 'react';
 import {
   TicketType,
-  TableColumnType,
   ColumnsOptions,
   SortDirections
 } from '../../../utils/types';
