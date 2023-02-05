@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
-import DateIcon from '../icons/DateIcon';
+import DateIcon from '../../icons/DateIcon';
 import BiotechIcon from '@mui/icons-material/Biotech';
 
 const NoTicketsFound = ({

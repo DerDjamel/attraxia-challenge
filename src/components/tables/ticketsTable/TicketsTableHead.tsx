@@ -6,13 +6,30 @@ import {
   TableColumnType
 } from '../../../utils/types';
 
+const TableColumns: TableColumnType[] = [
+  {
+    name: 'Tickets',
+    id: 'title'
+  },
+  {
+    name: 'Status',
+    id: 'status'
+  },
+  {
+    name: 'Created on',
+    id: 'createdOn'
+  },
+  {
+    name: 'Replies',
+    id: 'replies'
+  }
+];
+
 function TicketsTableHead({
-  tableColumns,
   sortedBy,
   sortDirection,
   sortTableByColumn
 }: {
-  tableColumns: TableColumnType[];
   sortedBy: ColumnsOptions;
   sortDirection: SortDirections;
   sortTableByColumn: (tableColumn: ColumnsOptions) => void;
@@ -23,7 +40,7 @@ function TicketsTableHead({
         sx={{
           textTransform: 'uppercase'
         }}>
-        {tableColumns.map((column) => {
+        {TableColumns.map((column) => {
           return (
             <TableCell
               key={column.id}

@@ -1,19 +1,24 @@
 import { Container, Stack } from '@mui/material';
-import Navigationbar from './components/navigations/NavigationBar';
-import SupportSection from './components/sections/SupportSection';
-import TicketsSection from './components/sections/TicketsSection';
+import { lazy } from 'react';
+import AppLayout from './layouts/AppLayout';
+
+const SupportSection = lazy(
+  () => import('./components/sections/SupportSection')
+);
+
+const TicketsSection = lazy(
+  () => import('./components/sections/TicketsSection')
+);
 
 function App() {
   return (
     <div className="App">
-      <Navigationbar></Navigationbar>
-
-      <Container>
+      <AppLayout>
         <Stack spacing={4}>
           <SupportSection></SupportSection>
           <TicketsSection></TicketsSection>
         </Stack>
-      </Container>
+      </AppLayout>
     </div>
   );
 }

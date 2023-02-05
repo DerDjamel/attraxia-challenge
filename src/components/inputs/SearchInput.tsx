@@ -1,6 +1,7 @@
 import { IconButton, InputBase, Stack, SxProps, Theme } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import debounce from 'lodash.debounce';
+import { memo } from 'react';
 
 const SearchInput = ({
   sx,
@@ -31,4 +32,4 @@ const SearchInput = ({
   );
 };
 
-export default SearchInput;
+export default memo(SearchInput);

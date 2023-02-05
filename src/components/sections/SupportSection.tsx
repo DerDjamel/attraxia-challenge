@@ -3,6 +3,7 @@ import SupportIcon from '@mui/icons-material/Support';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SearchInput from '../inputs/SearchInput';
+import { memo } from 'react';
 
 function SupportSection() {
   return (
@@ -95,4 +96,4 @@ function SupportSection() {
   );
 }
 
-export default SupportSection;
+export default memo(SupportSection);

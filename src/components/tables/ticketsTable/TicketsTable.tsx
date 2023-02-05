@@ -5,13 +5,14 @@ import {
   CircularProgress,
   Table
 } from '@mui/material';
+import { memo } from 'react';
 import {
   TicketType,
   TableColumnType,
   ColumnsOptions,
   SortDirections
 } from '../../../utils/types';
-import NoTicketsFound from '../../notFound/NoTicketsFound';
+import NoTicketsFound from './NoTicketsFound';
 import TicketsTableBody from './TicketsTableBody';
 import TicketsTableHead from './TicketsTableHead';
 
@@ -22,7 +23,6 @@ import TicketsTableHead from './TicketsTableHead';
 
 const TicketsTable = ({
   data,
-  tableColumns,
   sortedBy,
   sortDirection,
   sortTableByColumn,
@@ -30,7 +30,6 @@ const TicketsTable = ({
   debouncedSearchValue
 }: {
   data: TicketType[];
-  tableColumns: TableColumnType[];
   sortedBy: ColumnsOptions;
   sortDirection: SortDirections;
   searchLoading: boolean;
@@ -53,7 +52,6 @@ const TicketsTable = ({
           {data.length > 0 ? (
             <Table>
               <TicketsTableHead
-                tableColumns={tableColumns}
                 sortedBy={sortedBy}
                 sortDirection={sortDirection}
                 sortTableByColumn={sortTableByColumn}></TicketsTableHead>
@@ -72,4 +70,4 @@ const TicketsTable = ({
   );
 };
 
-export default TicketsTable;
+export default memo(TicketsTable);

@@ -11,8 +11,8 @@ import {
   Grid,
   CircularProgress
 } from '@mui/material';
-import NoTicketsFound from '../notFound/NoTicketsFound';
-import { useEffect, useMemo, useState } from 'react';
+import NoTicketsFound from '../tables/ticketsTable/NoTicketsFound';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import SearchInput from '../inputs/SearchInput';
@@ -28,7 +28,7 @@ import {
   sortComparator,
   statusToColor
 } from '../../utils/helpers';
-import TicketsTable from '../tables/ticketsTable/TicketsTable';
+const TicketsTable = lazy(() => import('../tables/ticketsTable/TicketsTable'));
 
 const rows: TicketType[] = [
   {
@@ -125,25 +125,6 @@ const rows: TicketType[] = [
       avatar: 'https://mui.com/static/images/avatar/1.jpg',
       role: 'Staff'
     }
-  }
-];
-
-const TableColumns: TableColumnType[] = [
-  {
-    name: 'Tickets',
-    id: 'title'
-  },
-  {
-    name: 'Status',
-    id: 'status'
-  },
-  {
-    name: 'Created on',
-    id: 'createdOn'
-  },
-  {
-    name: 'Replies',
-    id: 'replies'
   }
 ];
 
@@ -330,14 +311,25 @@ const TicketsSection = () => {
             // If Rows is Empty
             <NoTicketsFound message="Your support tickets or feature requests will appear here." />
           ) : (
-            <TicketsTable
-              data={tableData}
-              tableColumns={TableColumns}
-              sortedBy={sortedBy}
-              sortDirection={sortDirection}
-              sortTableByColumn={sortTableByColumn}
-              searchLoading={searchLoading}
-              debouncedSearchValue={debouncedSearchValue}></TicketsTable>
+            <Suspense
+              fallback={
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    padding: 5
+                  }}>
+                  <CircularProgress />
+                </Box>
+              }>
+              <TicketsTable
+                data={tableData}
+                sortedBy={sortedBy}
+                sortDirection={sortDirection}
+                sortTableByColumn={sortTableByColumn}
+                searchLoading={searchLoading}
+                debouncedSearchValue={debouncedSearchValue}></TicketsTable>
+            </Suspense>
           )}
         </Box>
       </Box>
