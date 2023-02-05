@@ -1,7 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import Navigationbar from './components/navigations/NavigationBar';
 import SupportSection from './components/sections/SupportSection';
-import TicketsTable from './components/sections/TicketsTable';
+import TicketsSection from './components/sections/TicketsSection';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <Container>
         <Stack spacing={4}>
           <SupportSection></SupportSection>
-          <TicketsTable></TicketsTable>
+          <TicketsSection></TicketsSection>
         </Stack>
       </Container>
     </div>

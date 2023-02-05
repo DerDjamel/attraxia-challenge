@@ -3,30 +3,18 @@ import {
   Button,
   Stack,
   Typography,
-  Table,
-  Avatar,
-  Chip,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Menu,
   MenuItem,
   Badge,
   Divider,
-  TableSortLabel,
   TablePagination,
   Grid,
   CircularProgress
 } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react';
+import NoTicketsFound from '../notFound/NoTicketsFound';
+import { useEffect, useMemo, useState } from 'react';
 
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import DateIcon from '../icons/DateIcon';
-import FaceIcon from '@mui/icons-material/Face';
-import BiotechIcon from '@mui/icons-material/Biotech';
 import SearchInput from '../inputs/SearchInput';
 import {
   ColumnsOptions,
@@ -40,6 +28,7 @@ import {
   sortComparator,
   statusToColor
 } from '../../utils/helpers';
+import TicketsTable from '../tables/ticketsTable/TicketsTable';
 
 const rows: TicketType[] = [
   {
@@ -62,8 +51,7 @@ const rows: TicketType[] = [
     replies: 4,
     lastUser: {
       username: 'Dermache Djamel',
-      avatar: 'https://mui.com/static/images/avatar/1.jpg',
-      role: 'Staff'
+      avatar: 'https://mui.com/static/images/avatar/1.jpg'
     }
   },
   {
@@ -159,56 +147,7 @@ const TableColumns: TableColumnType[] = [
   }
 ];
 
-const NoTicketsFound = ({
-  searchTerm,
-  message
-}: {
-  searchTerm?: string;
-  message: string;
-}) => {
-  return (
-    <Stack
-      direction={'column'}
-      justifyContent={'center'}
-      alignItems={'center'}
-      spacing={1}
-      sx={{ paddingBlock: 6 }}>
-      <Box
-        sx={{
-          backgroundColor: '#EAF1FE',
-          borderRadius: '100%',
-          padding: 6,
-          marginBottom: 3
-        }}>
-        {!searchTerm ? (
-          <DateIcon />
-        ) : (
-          <BiotechIcon
-            sx={{
-              fontSize: 90
-            }}
-          />
-        )}
-      </Box>
-      <Typography
-        sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}
-        variant={'h5'}>
-        No Tickets Found {searchTerm ? `for "${searchTerm}"` : null}
-      </Typography>
-      <Typography
-        variant="body1"
-        sx={{
-          color: '#555555',
-          textTransform: 'capitalize',
-          fontWeight: 400
-        }}>
-        {message}
-      </Typography>
-    </Stack>
-  );
-};
-
-const TicketsTable = () => {
+const TicketsSection = () => {
   /* Sorted colums State */
   const [sortedBy, setSortedBy] = useState<ColumnsOptions>('title');
   const [sortDirection, setSortDirection] = useState<SortDirections>('desc');
@@ -386,146 +325,19 @@ const TicketsTable = () => {
 
         <Divider />
 
-        <Box paddingY={4} paddingX={5}>
+        <Box paddingY={4} paddingX={2}>
           {rows.length === 0 ? (
             // If Rows is Empty
             <NoTicketsFound message="Your support tickets or feature requests will appear here." />
           ) : (
-            <TableContainer elevation={0} component={Paper}>
-              {searchLoading ? (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    padding: 5
-                  }}>
-                  <CircularProgress />
-                </Box>
-              ) : (
-                <>
-                  {tableData.length > 0 ? (
-                    <Table>
-                      <TableHead>
-                        <TableRow
-                          sx={{
-                            textTransform: 'uppercase'
-                          }}>
-                          {TableColumns.map((column) => {
-                            return (
-                              <TableCell
-                                key={column.id}
-                                sortDirection={sortDirection}
-                                sx={{ fontSize: 12, fontWeight: 'bold' }}>
-                                <TableSortLabel
-                                  active={sortedBy === column.id}
-                                  direction={sortDirection}
-                                  onClick={(e) => sortTableByColumn(column.id)}>
-                                  {column.name}
-                                </TableSortLabel>
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      </TableHead>
-
-                      <TableBody>
-                        {tableData?.map((row) => {
-                          return (
-                            <TableRow key={row.title}>
-                              <TableCell>
-                                <Stack direction={'column'}>
-                                  <Typography
-                                    variant={'body1'}
-                                    color={'#286EF1'}
-                                    sx={{ fontWeight: 'bold' }}>
-                                    {row.title}
-                                  </Typography>
-                                  <Typography variant={'body1'} color={'#555'}>
-                                    {row.subtitle}
-                                  </Typography>
-                                </Stack>
-                              </TableCell>
-                              <TableCell>
-                                <Chip
-                                  label={row.status}
-                                  color={statusToColor(row.status)}
-                                  size="small"
-                                  sx={{ textTransform: 'uppercase' }}
-                                />
-                              </TableCell>
-                              <TableCell>{row.createdOn}</TableCell>
-                              <TableCell>
-                                <Stack
-                                  direction={'row'}
-                                  spacing={3}
-                                  justifyContent={'space-between'}
-                                  alignItems={'center'}
-                                  flexGrow={1}>
-                                  <Stack
-                                    direction={'row'}
-                                    spacing={2}
-                                    flexGrow={1}
-                                    alignItems={'center'}>
-                                    <Avatar
-                                      sx={{ width: 32, height: 32 }}
-                                      alt="Remy Sharp"
-                                      src={row.lastUser.avatar}
-                                    />
-                                    <Typography>
-                                      Last by {row.lastUser.username}
-                                    </Typography>
-                                  </Stack>
-                                  <Stack
-                                    direction={'row'}
-                                    spacing={3}
-                                    justifyContent={'end'}
-                                    alignItems={'center'}
-                                    flexGrow={1}>
-                                    <Stack
-                                      direction={'row'}
-                                      spacing={3}
-                                      justifyContent={'end'}
-                                      alignItems={'center'}
-                                      flexGrow={1}>
-                                      <Badge
-                                        badgeContent={row.replies}
-                                        sx={{
-                                          '.MuiBadge-badge': {
-                                            borderRadius: 1,
-                                            backgroundColor: '#EDEDED'
-                                          }
-                                        }}
-                                      />
-                                      {row.lastUser.role ? (
-                                        <Chip
-                                          size="small"
-                                          icon={<FaceIcon />}
-                                          label={
-                                            <Typography variant={'button'}>
-                                              {row.lastUser.role}
-                                            </Typography>
-                                          }
-                                        />
-                                      ) : null}
-                                    </Stack>
-                                  </Stack>
-                                </Stack>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  ) : (
-                    <NoTicketsFound
-                      searchTerm={debouncedSearchValue}
-                      message="Please adjust your search term and try again."
-                    />
-                  )}
-                </>
-              )}
-            </TableContainer>
-            // { tableData.length === 0 ? : <NoTicketsFound searchTerm={debouncedSearchValue} message="Please adjust your search term and try again." />}
+            <TicketsTable
+              data={tableData}
+              tableColumns={TableColumns}
+              sortedBy={sortedBy}
+              sortDirection={sortDirection}
+              sortTableByColumn={sortTableByColumn}
+              searchLoading={searchLoading}
+              debouncedSearchValue={debouncedSearchValue}></TicketsTable>
           )}
         </Box>
       </Box>
@@ -551,4 +363,4 @@ const TicketsTable = () => {
   );
 };
 
-export default TicketsTable;
+export default TicketsSection;

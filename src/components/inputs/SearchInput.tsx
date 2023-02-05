@@ -8,8 +8,8 @@ const SearchInput = ({
   setSearchValue
 }: {
   sx?: SxProps<Theme> | undefined;
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  searchValue?: string;
+  setSearchValue?: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   return (
     <Stack
@@ -24,7 +24,7 @@ const SearchInput = ({
         size={'small'}
         value={searchValue}
         onChange={(e) => {
-          setSearchValue(e.target.value);
+          if (setSearchValue) setSearchValue(e.target.value);
         }}
       />
     </Stack>
